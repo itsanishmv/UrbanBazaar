@@ -6,13 +6,15 @@ import { db } from '../firebase'
 import { addDoc,collection, doc} from '@firebase/firestore'
 
 function Payments(){
-    const [{ cart,user}, dispatch] = useContext(contextCreated)
+    const [{ cart, user, buy ,prod}, dispatch] = useContext(contextCreated)
+    console.log(buy)
     const history = useHistory()
     // const cart2 = [...cart.reduce((map,obj)=> map.set(obj.id,obj),new Map()).values()]
-    const comma = cart.reduce((amount, cartItem) => cartItem?.price + amount, 0)
+    const totalAmount = cart?.reduce((amount, cartItem) => cartItem?.price + amount, 0)
+    const oneItemtoBuy = prod?.filter(itemId => itemId.id === buy)
     const d = new Date()
     async function  addOrders() {
-        const collec = doc(db, `Users/${user}`, )
+        const collec = doc(db, `Users/${user}`, ) 
         await addDoc(collection(collec, "order"), {
             items: cart,
             date: `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`,
@@ -26,11 +28,12 @@ function Payments(){
             history.push("/orders")
       
     }
-
+    
     function errorMessage() {
         console.log("sign in to continue")
     }
-
+    
+    
     return (
         <PaymentContainer>
             <LeftSideBox>
@@ -43,25 +46,34 @@ function Payments(){
                         <h5>krishna kripa kooloth kulam road , Aduthila , payanagadi , kannur , kerala 670303</h5>
                          <div>
                             <h3>Total items :</h3>
-                            <h5>{cart.length}</h5>
+                            <h5>{cart?.length}</h5>
                          </div>
                     </TopComponent>
 
                     <ItemList>
                         {/* item list */}
-                        {cart.map(item => (
-                            <div>
+                    {buy ?
+                        <div>
+                            <img src={oneItemtoBuy[0]?.itm.image} alt="img" />
+                            <h4>{oneItemtoBuy[0]?.itm.title}</h4>
+                            <h3>{oneItemtoBuy[0]?.itm.price}</h3>
+                        </div>
+                        :
+                        cart.map(item=> {
+                           return <div>
                                 <img src={item.image} alt="img" />
                                 <h4>{item.title}</h4>
                                 <h3>{item.price}</h3>
-                            </div>
-                                
-                        ))
-                        }
+                             </div>
+                        })
+                      
+                    }
+                    
+                        
                         
                 </ItemList>
                        <div style={{marginBottom:"100px ",marginLeft:"700px",fontSize:"15px"}}>
-                           <h1 style={{fontWeight:"600",borderBottom:"1px solid lightgrey"}}>Subtotal : <span style={{fontFamily:"helvetica",color:"#B65345"}}>₹{comma.toLocaleString()}</span> </h1>
+                           <h1 style={{fontWeight:"600",borderBottom:"1px solid lightgrey"}}>Subtotal : <span style={{fontFamily:"helvetica",color:"#B65345"}}>₹{totalAmount?.toLocaleString()}</span> </h1>
                         </div>
             </LeftSideBox>
      
@@ -71,7 +83,7 @@ function Payments(){
                 <h3>Place order</h3>
                 <input placeholder="enter card number" type="text" />
                 <input placeholder="cvv" type="password" />
-                <button onClick={user && cart.length > 0 ? addOrders : errorMessage}>Pay</button>
+                <button onClick={user && cart?.length > 0 ? addOrders : errorMessage}>Pay</button>
                         
                
                 <Form >

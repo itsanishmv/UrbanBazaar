@@ -9,8 +9,8 @@ import FlipMove from 'react-flip-move'
 function Checkout() {
     const [{ cart, pin,user }, ] = useContext(contextCreated)
     const history = useHistory()
-    const comma = cart.reduce((amount, cartItem) => cartItem?.price + amount, 0)
-    console.log(typeof(comma))
+    const totalAmount = cart.reduce((amount, cartItem) => cartItem?.price + amount, 0)
+    
    return (
        <CheckoutContainer>
            <LeftContainer>
@@ -38,7 +38,7 @@ function Checkout() {
            <RightContainer>
                <span>{!cart.length === 0 && "Your order is eligible for FREE Delivery."}</span>
                
-               <h2>Subtotal({cart.length === 1 ? `${cart.length} item` : `${cart.length} items`}): <strong>₹{comma.toLocaleString()}</strong></h2>
+               <h2>Subtotal({cart.length === 1 ? `${cart.length} item` : `${cart.length} items`}): <strong>₹{totalAmount.toLocaleString()}</strong></h2>
                
                <button onClick={() => !user ? history.push("/login") : history.push('/payments')}>{cart.length === 0 ? "No items in cart" : "Proceed to buy"}</button>
                <h5>{!user && "please sign in to continue" }</h5>

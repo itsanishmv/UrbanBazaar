@@ -5,7 +5,7 @@ export const IntitialState = {
     pin: '',
     prod: [],
     prodSearch: "",
-    buy: ""
+    buy: ''
 }
 
 
@@ -43,7 +43,7 @@ const Reducer = (state, action) => {
                 ...state,
                 pin:action.pin
             }
-       
+        
 
         case "productArray":
             return {
@@ -52,7 +52,7 @@ const Reducer = (state, action) => {
             }
         case "buy":
             return {
-                ...state,
+               ...state,
                 buy:action.item
             }
         case "empty_cart":

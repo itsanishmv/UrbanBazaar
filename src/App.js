@@ -32,7 +32,7 @@ const  App = () => {
       }
       
     })
-    console.log(user)
+  
   }, [dispatch,user])
   
 

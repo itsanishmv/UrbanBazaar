@@ -11,7 +11,7 @@ ReactDOM.render(
  
   <React.StrictMode>
  
-    <BrowserRouter>
+    <BrowserRouter> 
     <StateContext Reducer={Reducer} InitialState={IntitialState}>
          <App />
     </StateContext>
